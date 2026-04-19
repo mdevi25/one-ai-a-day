@@ -130,7 +130,7 @@
 
     /* ── CALENDAR SECTION ── */
     .cal-section {
-      padding: 16px 0 48px;
+      padding: 16px 0 12px;
       position: relative;
     }
     .cal-label {
@@ -175,7 +175,7 @@
     }
     .cal-dc {
       aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-      border-radius: 6px; font-size: 13px; cursor: pointer; color: var(--muted);
+      border-radius: 6px; font-size: 15px; cursor: pointer; color: var(--muted);
       position: relative; transition: background 0.15s, color 0.15s;
     }
     .cal-dc:hover { background: var(--purple-light); color: var(--ink); }
@@ -198,20 +198,40 @@
     .cal-dc.sel.dynamic::after { background: var(--teal-light); }
     .cal-dc.empty { cursor: default; pointer-events: none; }
 
-    /* Legend + reset */
+    /* Calendar footer (now only holds the clear-selection link) */
     .cal-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-top: 14px; flex-wrap: wrap; gap: 12px;
+      display: flex; align-items: center; justify-content: flex-end;
+      margin-top: 10px; flex-wrap: wrap;
     }
     .cal-legend { display: flex; flex-direction: row; align-items: center; gap: 18px; flex-wrap: wrap; }
-    .cal-leg-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
-    .cal-ldot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .cal-leg-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+    .cal-ldot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
     .cal-reset {
       font-size: 11px; color: var(--muted); cursor: pointer;
       text-decoration: underline; text-underline-offset: 2px;
       background: none; border: none; font-family: inherit;
     }
     .cal-reset:hover { color: var(--ink); }
+
+    /* Left-column legend and visit counter */
+    .hero-legend {
+      display: flex; flex-direction: column; gap: 8px;
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .hero-legend .cal-leg-row {
+      color: #5F5A53; /* WCAG AA at 13px on cream (ratio 5.74) */
+    }
+    .hero-visits {
+      font-size: 13px; color: #5F5A53;
+      margin-top: 16px;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.5;
+    }
+    .hero-visits .visit-num {
+      color: var(--purple); font-weight: 500;
+    }
 
     /* Panel below grid (inline) */
     .cal-panel {
@@ -321,7 +341,7 @@
 
     /* ── FOOTER ── */
     footer {
-      margin-top: 60px; padding: 28px 0 36px;
+      margin-top: 20px; padding: 18px 0 24px;
       border-top: 1px solid var(--border);
       text-align: center;
       font-size: 12px; color: var(--muted);
@@ -368,7 +388,7 @@
       .hero-intro { font-size: 13px; }
       .cal-panel-title { font-size: 18px; }
       .cal-grid { padding: 8px; gap: 3px; }
-      .cal-dc { font-size: 12px; }
+      .cal-dc { font-size: 14px; }
       .nav-right { font-size: 11px; }
     }
   </style>
@@ -393,6 +413,11 @@
         <p class="hero-intro">
           A new AI insight every day. The <strong>1st</strong> of every month introduces a foundational idea. From the <strong>2nd to the end of the month</strong>, each date goes deeper &mdash; and every four months the focus shifts to a new theme.
         </p>
+        <div class="hero-legend">
+          <div class="cal-leg-row"><span class="cal-ldot" style="background:var(--teal)"></span> Beginner's Journey</div>
+          <div class="cal-leg-row"><span class="cal-ldot" style="background:var(--purple)"></span> AI Concept</div>
+        </div>
+        <div class="hero-visits" id="visitTicker" aria-live="polite"></div>
       </section>
     </aside>
     <div class="split-right">
@@ -405,10 +430,6 @@
         </div>
         <div class="cal-grid" id="calGrid"></div>
         <div class="cal-footer">
-          <div class="cal-legend">
-            <div class="cal-leg-row"><div class="cal-ldot" style="background:var(--teal)"></div> Beginner's Journey</div>
-            <div class="cal-leg-row"><div class="cal-ldot" style="background:var(--purple)"></div> AI Concept</div>
-          </div>
           <button class="cal-reset" id="calReset" onclick="calResetSel()" style="display:none">clear selection</button>
         </div>
         <div class="cal-panel" id="calPanel"></div>
@@ -3480,6 +3501,28 @@ function calShareFallback(link, onDone) {
     try { window.prompt('Copy this link:', link); } catch (_) {}
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   VISIT COUNTER — CounterAPI V1 (no account required)
+   Increments on every page load; silently fails if the service is
+   unreachable so the page never shows "Loading…" or an error.
+   ═══════════════════════════════════════════════════════════════ */
+
+(function() {
+  var namespace = 'mdevi25-one-ai-a-day';
+  var key       = 'total-visits';
+  var url       = 'https://api.counterapi.dev/v1/' + namespace + '/' + key + '/up';
+
+  fetch(url, { method: 'GET', cache: 'no-store' })
+    .then(function(r) { return r.ok ? r.json() : null; })
+    .then(function(data) {
+      if (!data || typeof data.count !== 'number') return;
+      var el = document.getElementById('visitTicker');
+      if (!el) return;
+      el.innerHTML = 'Page visits: <span class="visit-num">' + data.count.toLocaleString() + '</span>';
+    })
+    .catch(function() { /* Silent fail — counter simply doesn't show. */ });
+})();
 
 /* ═══════════════════════════════════════════════════════════════
    BOOTSTRAP
