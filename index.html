@@ -146,10 +146,25 @@
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 10px;
     }
+    .cal-month-group {
+      display: flex; align-items: baseline; gap: 10px;
+    }
     .cal-month-title {
       font-family: 'Playfair Display', serif;
       font-size: 22px; color: var(--ink);
     }
+    .cal-today-btn {
+      display: none;
+      font-size: 11px; color: var(--purple);
+      background: var(--purple-light); border: none;
+      padding: 4px 10px; border-radius: 99px;
+      cursor: pointer;
+      font-family: inherit; font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: background 0.15s, color 0.15s;
+    }
+    .cal-today-btn:hover { background: var(--purple); color: #fff; }
+    .cal-today-btn.visible { display: inline-flex; align-items: center; }
     .cal-nav-btn {
       background: none; border: 1px solid var(--border); cursor: pointer;
       font-size: 16px; color: var(--muted);
@@ -344,13 +359,28 @@
       margin-top: 20px; padding: 18px 0 24px;
       border-top: 1px solid var(--border);
       text-align: center;
-      font-size: 12px; color: var(--muted);
+      font-size: 13px; color: #5F5A53;
     }
-    footer a {
-      color: var(--muted); text-decoration: none;
+    .footer-inner {
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: center;
+      gap: 10px;
+      max-width: 1100px; margin: 0 auto; padding: 0 28px;
+    }
+    .footer-copy { font-variant-numeric: tabular-nums; }
+    .footer-sep { color: rgba(26,23,20,0.20); }
+    .footer-link {
+      color: #5F5A53; text-decoration: none;
       border-bottom: 1px dotted rgba(122,116,107,0.4);
+      transition: color 0.15s, border-color 0.15s;
     }
-    footer a:hover { color: var(--ink); }
+    .footer-link:hover { color: var(--ink); border-color: var(--ink); }
+    .footer-linkedin {
+      display: inline-flex; align-items: center;
+      border-bottom-color: transparent;
+    }
+    .footer-linkedin:hover { color: var(--purple); }
+    .footer-linkedin svg { transition: color 0.15s; }
 
     /* ── SEASONAL ART BAR ANIMATIONS ── */
     @keyframes seasonSway    { 0%,100% { transform: rotate(-2deg) } 50% { transform: rotate(2deg) } }
@@ -425,7 +455,10 @@
         <div id="birdWrap"></div>
         <div class="cal-head">
           <button class="cal-nav-btn" onclick="calChangeMonth(-1)" aria-label="Previous month">&#8249;</button>
-          <div class="cal-month-title" id="calTitle"></div>
+          <div class="cal-month-group">
+            <div class="cal-month-title" id="calTitle"></div>
+            <button class="cal-today-btn" id="calTodayBtn" onclick="calGoToday()" aria-label="Jump to current month">Today</button>
+          </div>
           <button class="cal-nav-btn" onclick="calChangeMonth(1)" aria-label="Next month">&#8250;</button>
         </div>
         <div class="cal-grid" id="calGrid"></div>
@@ -445,7 +478,15 @@
 <div class="cal-toast" id="calToast">Link copied</div>
 
 <footer>
-  Curated by <a href="https://mdevi25.github.io" target="_blank" rel="noopener">Madhu Devi</a> &middot; mdevi25.github.io
+  <div class="footer-inner">
+    <span class="footer-copy">&copy; <span id="footerYear"></span> Madhu Devi</span>
+    <span class="footer-sep" aria-hidden="true">&middot;</span>
+    <a href="https://mdevi25.github.io" target="_blank" rel="noopener" class="footer-link">mdevi25.github.io</a>
+    <span class="footer-sep" aria-hidden="true">&middot;</span>
+    <a href="https://www.linkedin.com/in/madhudevi/" target="_blank" rel="noopener" class="footer-link footer-linkedin" aria-label="Madhu Devi on LinkedIn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" style="vertical-align: -2px; margin-right: 4px;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn
+    </a>
+  </div>
 </footer>
 
 <!-- ═════════════════════════════════════════════════════════════
@@ -3250,6 +3291,16 @@ function calChangeMonth(d) {
   calRender();
 }
 
+function calGoToday() {
+  var now = new Date();
+  calCur = new Date(now.getFullYear(), now.getMonth(), 1);
+  calSel = now.getDate();
+  calCollapse();
+  calUpdateUrl();
+  calRender();
+  setTimeout(calScrollPanelIntoView, 40);
+}
+
 function calResetSel() {
   calSel = null;
   calCollapse();
@@ -3290,6 +3341,12 @@ function calRender() {
   /* Header chrome */
   document.getElementById('calTitle').textContent = CAL_MONTHS[mo] + ' ' + yr;
   document.getElementById('birdWrap').innerHTML = calDrawSeasonal(mo);
+  var todayBtn = document.getElementById('calTodayBtn');
+  if (todayBtn) {
+    var isCurrentMonth = (now.getFullYear() === yr && now.getMonth() === mo);
+    if (isCurrentMonth) todayBtn.classList.remove('visible');
+    else todayBtn.classList.add('visible');
+  }
 
   /* Grid */
   var g = document.getElementById('calGrid');
@@ -3529,6 +3586,10 @@ function calShareFallback(link, onDone) {
    ═══════════════════════════════════════════════════════════════ */
 
 (function() {
+  /* Footer year */
+  var yearEl = document.getElementById('footerYear');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
   calParseUrl();
   // If today is the 1st and no URL param set selection, auto-select Day 1
   if (calSel === null) {
