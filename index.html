@@ -127,6 +127,24 @@
       max-width: 100%; line-height: 1.6;
     }
     .hero-intro strong { color: var(--ink); font-weight: 500; }
+    .hero-cta {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 15px;
+      color: #1A1714;
+      line-height: 1.45;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(107,95,212,0.4);
+    }
+    .hero-cta strong {
+      color: var(--purple);
+      font-weight: 600;
+      font-style: normal;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+    }
 
     /* ── CALENDAR SECTION ── */
     .cal-section {
@@ -147,7 +165,7 @@
       margin-bottom: 10px;
     }
     .cal-month-group {
-      display: flex; align-items: baseline; gap: 10px;
+      display: flex; align-items: center; gap: 10px;
     }
     .cal-month-title {
       font-family: 'Playfair Display', serif;
@@ -155,16 +173,18 @@
     }
     .cal-today-btn {
       display: none;
-      font-size: 11px; color: var(--purple);
+      color: var(--purple);
       background: var(--purple-light); border: none;
-      padding: 4px 10px; border-radius: 99px;
+      width: 30px; height: 30px;
+      border-radius: 50%;
       cursor: pointer;
-      font-family: inherit; font-weight: 500;
-      letter-spacing: 0.04em;
-      transition: background 0.15s, color 0.15s;
+      align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s, transform 0.15s;
     }
     .cal-today-btn:hover { background: var(--purple); color: #fff; }
-    .cal-today-btn.visible { display: inline-flex; align-items: center; }
+    .cal-today-btn:active { transform: scale(0.94); }
+    .cal-today-btn.visible { display: inline-flex; }
+    .cal-today-btn svg { display: block; }
     .cal-nav-btn {
       background: none; border: 1px solid var(--border); cursor: pointer;
       font-size: 16px; color: var(--muted);
@@ -238,6 +258,50 @@
     .hero-legend .cal-leg-row {
       color: #5F5A53; /* WCAG AA at 13px on cream (ratio 5.74) */
     }
+    .leg-main { font-weight: 500; color: #1A1714; }
+    .leg-note {
+      color: #7A746B;
+      font-size: 12px;
+      margin-left: 2px;
+    }
+
+    /* Expandable "How this works" */
+    .hero-howto {
+      margin-top: 16px;
+      font-size: 13px;
+    }
+    .hero-howto summary {
+      color: var(--purple);
+      font-weight: 500;
+      cursor: pointer;
+      list-style: none;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 0;
+      transition: color 0.15s;
+    }
+    .hero-howto summary::-webkit-details-marker { display: none; }
+    .hero-howto summary::before {
+      content: '▸';
+      font-size: 10px;
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+    .hero-howto[open] summary::before { transform: rotate(90deg); }
+    .hero-howto summary:hover { color: var(--ink); }
+    .hero-howto-body {
+      padding: 12px 0 6px 16px;
+      color: #5F5A53;
+      line-height: 1.55;
+    }
+    .hero-howto-body p {
+      margin: 0 0 8px 0;
+    }
+    .hero-howto-body p:last-child { margin-bottom: 0; }
+    .hero-howto-body strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
     .hero-visits {
       font-size: 13px; color: #5F5A53;
       margin-top: 16px;
@@ -443,10 +507,28 @@
         <p class="hero-intro">
           A new AI insight every day. The <strong>1st</strong> of every month introduces a foundational idea. From the <strong>2nd to the end of the month</strong>, each date goes deeper &mdash; and every four months the focus shifts to a new theme.
         </p>
+        <p class="hero-cta">Wondering what AI insight is hiding behind each date &mdash; <strong>click and see</strong>.</p>
         <div class="hero-legend">
-          <div class="cal-leg-row"><span class="cal-ldot" style="background:var(--teal)"></span> Beginner's Journey</div>
-          <div class="cal-leg-row"><span class="cal-ldot" style="background:var(--purple)"></span> AI Concept</div>
+          <div class="cal-leg-row">
+            <span class="cal-ldot" style="background:var(--teal)"></span>
+            <span class="leg-main">Beginner's Journey</span>
+            <span class="leg-note">(1st of the month)</span>
+          </div>
+          <div class="cal-leg-row">
+            <span class="cal-ldot" style="background:var(--purple)"></span>
+            <span class="leg-main">AI Concept</span>
+            <span class="leg-note">(every other date)</span>
+          </div>
         </div>
+        <details class="hero-howto">
+          <summary>How this works</summary>
+          <div class="hero-howto-body">
+            <p><strong>Day 1 &mdash; Beginner's Journey.</strong> One foundational step each month, twelve across the year.</p>
+            <p><strong>Days 2 to end of month &mdash; AI Concept.</strong> A different concept on every dotted date.</p>
+            <p><strong>Quarters rotate themes.</strong> Q1 fundamentals &middot; Q2 for product managers &middot; Q3 ethics &middot; Q4 tools.</p>
+            <p><strong>Navigation.</strong> Use the arrows to browse any month; the calendar icon snaps back to today.</p>
+          </div>
+        </details>
         <div class="hero-visits" id="visitTicker" aria-live="polite"></div>
       </section>
     </aside>
@@ -457,7 +539,15 @@
           <button class="cal-nav-btn" onclick="calChangeMonth(-1)" aria-label="Previous month">&#8249;</button>
           <div class="cal-month-group">
             <div class="cal-month-title" id="calTitle"></div>
-            <button class="cal-today-btn" id="calTodayBtn" onclick="calGoToday()" aria-label="Jump to current month">Today</button>
+            <button class="cal-today-btn" id="calTodayBtn" onclick="calGoToday()" aria-label="Jump to current month" title="Jump to current month">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+                <circle cx="12" cy="16" r="2" fill="currentColor"/>
+              </svg>
+            </button>
           </div>
           <button class="cal-nav-btn" onclick="calChangeMonth(1)" aria-label="Next month">&#8250;</button>
         </div>
@@ -1615,9 +1705,9 @@ var SET_B = {
       '<line x1="340" y1="10" x2="340" y2="190" stroke="#D3D1C7" stroke-width="1"/>' +
       '<line x1="80" y1="100" x2="600" y2="100" stroke="#D3D1C7" stroke-width="1"/>' +
       '<text x="460" y="28" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="500" fill="#0F6E56">HIGH USER VALUE</text>' +
-      '<text x="200" y="28" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="500" fill="#888780">HIGH USER VALUE</text>' +
-      '<text x="460" y="165" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#888780">LOW USER VALUE</text>' +
-      '<text x="200" y="165" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#888780">LOW USER VALUE</text>' +
+      '<text x="200" y="28" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="500" fill="#888780">LOW USER VALUE</text>' +
+      '<text x="460" y="185" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#888780">HIGH USER VALUE</text>' +
+      '<text x="200" y="185" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#888780">LOW USER VALUE</text>' +
       '<text x="90" y="55" font-family="DM Sans,sans-serif" font-size="8" fill="#888780">LOW AI</text>' +
       '<text x="90" y="65" font-family="DM Sans,sans-serif" font-size="8" fill="#888780">CONFIDENCE</text>' +
       '<text x="90" y="145" font-family="DM Sans,sans-serif" font-size="8" fill="#888780">HIGH AI</text>' +
@@ -1634,7 +1724,7 @@ var SET_B = {
       '<text x="180" y="147" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#791F1F">Do not build</text>',
       205);
     },
-    cap: '<b>AI product roadmaps must account for both user value and AI reliability.</b> A feature with high user value but low AI confidence needs more prototyping and validation before committing — the uncertainty of AI outputs adds a dimension that standard prioritisation frameworks do not capture.'
+    cap: '<b>AI product roadmaps must account for both user value and AI reliability.</b> A feature with high user value but low AI confidence needs more prototyping and validation before committing &mdash; the uncertainty of AI outputs adds a dimension that standard prioritisation frameworks do not capture.'
   },
   57: {
     title: 'Technical debt in AI — what accumulates and why',
