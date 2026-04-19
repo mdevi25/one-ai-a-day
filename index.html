@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>One AI a Day</title>
-  <meta name="description" content="A new AI concept every day, curated by Madhu Devi." />
+  <title>One AI Insight a Day</title>
+  <meta name="description" content="A new AI insight every day, curated by Madhu Devi." />
 
   <!-- Open Graph / Social -->
-  <meta property="og:title" content="One AI a Day" />
-  <meta property="og:description" content="A new AI concept every day, curated by Madhu Devi." />
+  <meta property="og:title" content="One AI Insight a Day" />
+  <meta property="og:description" content="A new AI insight every day, curated by Madhu Devi." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mdevi25.github.io/one-ai-a-day/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="One AI a Day" />
-  <meta name="twitter:description" content="A new AI concept every day, curated by Madhu Devi." />
+  <meta name="twitter:title" content="One AI Insight a Day" />
+  <meta name="twitter:description" content="A new AI insight every day, curated by Madhu Devi." />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
 
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-qcSGgd-MwGQY3rEyzpaEz.js"></script>
@@ -78,7 +78,7 @@
       gap: 20px;
     }
     .nav-logo {
-      font-family: 'DM Serif Display', serif;
+      font-family: 'Playfair Display', serif;
       font-size: 20px; color: var(--ink); text-decoration: none;
       letter-spacing: -0.01em;
     }
@@ -93,28 +93,28 @@
     }
     .nav-right a:hover { color: var(--ink); border-color: var(--ink); }
 
-    /* ── HERO ── */
-    .hero { padding: 48px 0 12px; }
+    /* ── HERO (compressed) ── */
+    .hero { padding: 24px 0 8px; }
     .hero-eyebrow {
       font-size: 11px; font-weight: 500; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
     }
     .hero h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(36px, 6vw, 52px);
-      line-height: 1.05; letter-spacing: -0.02em;
-      margin-bottom: 14px;
+      font-family: 'Playfair Display', serif;
+      font-weight: 500;
+      font-size: clamp(28px, 4.4vw, 40px);
+      line-height: 1.1; letter-spacing: -0.015em;
+      margin-bottom: 10px;
     }
-    .hero h1 em { font-style: italic; color: var(--purple); }
     .hero-intro {
-      font-size: 15px; color: var(--muted); font-weight: 300;
-      max-width: 560px; line-height: 1.65;
+      font-size: 14px; color: var(--muted); font-weight: 300;
+      max-width: 600px; line-height: 1.55;
     }
     .hero-intro strong { color: var(--ink); font-weight: 500; }
 
     /* ── CALENDAR SECTION ── */
     .cal-section {
-      padding: 28px 0 60px;
+      padding: 16px 0 48px;
       position: relative;
     }
     .cal-label {
@@ -131,7 +131,7 @@
       margin-bottom: 10px;
     }
     .cal-month-title {
-      font-family: 'DM Serif Display', serif;
+      font-family: 'Playfair Display', serif;
       font-size: 22px; color: var(--ink);
     }
     .cal-nav-btn {
@@ -190,12 +190,6 @@
     .cal-legend { display: flex; flex-direction: row; align-items: center; gap: 18px; flex-wrap: wrap; }
     .cal-leg-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
     .cal-ldot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-    .cal-quarter-tag {
-      font-size: 10px; font-weight: 500;
-      padding: 3px 10px; border-radius: 99px;
-      background: var(--purple-light); color: var(--purple);
-      letter-spacing: 0.06em;
-    }
     .cal-reset {
       font-size: 11px; color: var(--muted); cursor: pointer;
       text-decoration: underline; text-underline-offset: 2px;
@@ -273,16 +267,9 @@
       background: var(--teal-light); color: var(--teal);
       letter-spacing: 0.06em;
     }
-    .cal-concept-tag {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 10px; font-weight: 500;
-      padding: 3px 10px; border-radius: 99px;
-      background: var(--purple-light); color: var(--purple);
-      letter-spacing: 0.06em;
-    }
 
     .cal-panel-title {
-      font-family: 'DM Serif Display', serif;
+      font-family: 'Playfair Display', serif;
       font-size: 20px; line-height: 1.2; letter-spacing: -0.01em;
       padding: 12px 20px 0; color: var(--ink);
     }
@@ -351,7 +338,9 @@
 
     /* Responsive */
     @media (max-width: 520px) {
-      .hero { padding: 32px 0 8px; }
+      .hero { padding: 18px 0 6px; }
+      .hero h1 { font-size: 26px; }
+      .hero-intro { font-size: 13px; }
       .cal-panel-title { font-size: 18px; }
       .cal-grid { padding: 8px; gap: 3px; }
       .cal-dc { font-size: 12px; }
@@ -364,7 +353,7 @@
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <span class="nav-logo">One AI a Day</span>
+    <span class="nav-logo">One AI Insight a Day</span>
     <div class="nav-right">Curated by <a href="https://mdevi25.github.io" target="_blank" rel="noopener">Madhu Devi</a></div>
   </div>
 </nav>
@@ -373,14 +362,13 @@
 <main class="wrap">
   <section class="hero">
     <p class="hero-eyebrow">Micro-learning, one date at a time</p>
-    <h1>One AI <em>a Day</em></h1>
+    <h1>One AI Insight a Day</h1>
     <p class="hero-intro">
-      Pick a date, reveal an AI concept. <strong>Day 1</strong> each month is a Beginner's Journey step &mdash; one of twelve across the year. <strong>Every other date</strong> shows an AI concept card themed to the current quarter.
+      Pick a date to reveal an AI insight. <strong>Day 1</strong> each month is a Beginner's Journey step &mdash; one of twelve across the year. <strong>Every other date</strong> reveals an AI concept card themed to the current quarter.
     </p>
   </section>
 
   <section class="cal-section">
-    <div class="cal-label" id="calQuarterLabel">Loading current quarter…</div>
     <div id="birdWrap"></div>
     <div class="cal-head">
       <button class="cal-nav-btn" onclick="calChangeMonth(-1)" aria-label="Previous month">&#8249;</button>
@@ -2951,8 +2939,6 @@ function calRender() {
 
   /* Header chrome */
   document.getElementById('calTitle').textContent = CAL_MONTHS[mo] + ' ' + yr;
-  document.getElementById('calQuarterLabel').innerHTML =
-    'Current quarter · <span class="cal-quarter-tag">' + qm.quarterLabel + ' &middot; ' + qm.quarterTitle + '</span>';
   document.getElementById('birdWrap').innerHTML = calDrawBirds(mo);
 
   /* Grid */
@@ -3082,7 +3068,6 @@ function calShowPanel() {
     '<div class="cal-panel-header">' +
       '<div>' +
         '<div class="cal-panel-date">' + mn.toUpperCase() + ' ' + calSel + ', ' + yr + '</div>' +
-        '<div style="margin-top:6px"><span class="cal-concept-tag">' + qm.quarterLabel + ' &middot; ' + qm.quarterTitle + '</span></div>' +
       '</div>' +
       '<div class="cal-panel-actions">' +
         '<button class="cal-icon-btn" onclick="calShareLink()" title="Copy link">&#128279; Share</button>' +
@@ -3112,7 +3097,7 @@ function calShowPanel() {
    ═══════════════════════════════════════════════════════════════ */
 
 function calUpdateDocTitle() {
-  var base = 'One AI a Day';
+  var base = 'One AI Insight a Day';
   if (!calSel) { document.title = base; return; }
   var mo = calCur.getMonth();
   if (calSel === 1) {
